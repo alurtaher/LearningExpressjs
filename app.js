@@ -1,5 +1,8 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const adminRouter = require('./routes/admin')
+const shopRouter = require('./routes/shop')
+const prodRouter = require('./routes/product')
 
 const app = express();
 app.set("view engine","ejs");
@@ -9,19 +12,15 @@ app.use(express.static('./public'))
 // Use body-parser middleware to parse request bodies
 app.use(bodyParser.urlencoded({ extended: false }));
 
-// Route to show the form for adding a product
-app.get('/add-product', (req, res) => {
-    res.render('addProd');
-});
+app.use(adminRouter)
+app.use(shopRouter)
+app.use(prodRouter)
 
 
-// Route to handle form submission
-app.post('/product', async (req, res) => {
-    const productName = await req.body.name;
-    const productSize = await req.body.size;
-    console.log('Product Name:', productName);
-    console.log('Product Size:', productSize);
-    res.redirect('/'); 
+
+// 404 Handler
+app.use((req, res, next) => {
+    res.status(404).send("Page not found");
 });
 
 app.listen(3000);
