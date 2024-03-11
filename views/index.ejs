@@ -1,0 +1,41 @@
+<!-- public/index.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat App</title>
+</head>
+<body>
+    <h1>Welcome to the Chat App</h1>
+    <form action="/login" method="post">
+        <input type="text" name="username" placeholder="Enter your username" required>
+        <button type="submit">Login</button>
+    </form>
+
+    <h2>Send Message</h2>
+    <form action="/send-message" method="post">
+        <input type="text" name="message" placeholder="Enter your message" required>
+        <button type="submit">Send</button>
+    </form>
+
+    <h2>Messages</h2>
+    <ul id="messages"></ul>
+
+    <script>
+        // Fetch messages from the server and display them
+        fetch('/messages')
+            .then(response => response.json())
+            .then(messages => {
+                const messagesList = document.getElementById('messages');
+                messages.forEach(message => {
+                    const listItem = document.createElement('li');
+                    listItem.textContent = message;
+                    messagesList.appendChild(listItem);
+                });
+            })
+            .catch(error => console.error('Error fetching messages:', error));
+    </script>
+</body>
+</html>
